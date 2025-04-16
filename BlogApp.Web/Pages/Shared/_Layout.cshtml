@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="utf-8" />
@@ -20,8 +22,13 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Ana Sayfa</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="categoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-list"></i> Kategoriler
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="categoryDropdown" id="categoryList">
+                                <!-- Kategoriler JavaScript ile doldurulacak -->
+                            </ul>
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
@@ -77,6 +84,44 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        // Kategorileri yükle
+        document.addEventListener('DOMContentLoaded', function () {
+            const apiBaseUrl = '@(Configuration["ApiSettings:BaseUrl"] ?? "http://localhost:5082")';
+            fetch(`${apiBaseUrl}/Category`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Kategoriler yüklenirken bir hata oluştu');
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    if (result.success && result.data) {
+                        const categoryList = document.getElementById('categoryList');
+                        result.data.forEach(category => {
+                            const li = document.createElement('li');
+                            const a = document.createElement('a');
+                            a.className = 'dropdown-item';
+                            a.href = `/Blog/Category/${category.id}`;
+                            a.textContent = category.name;
+                            li.appendChild(a);
+                            categoryList.appendChild(li);
+                        });
+                    } else {
+                        throw new Error(result.message || 'Kategoriler yüklenemedi');
+                    }
+                })
+                .catch(error => {
+                    console.error('Kategoriler yüklenirken hata oluştu:', error);
+                    const categoryList = document.getElementById('categoryList');
+                    const li = document.createElement('li');
+                    li.className = 'dropdown-item text-danger';
+                    li.textContent = 'Kategoriler yüklenemedi';
+                    categoryList.appendChild(li);
+                });
+        });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

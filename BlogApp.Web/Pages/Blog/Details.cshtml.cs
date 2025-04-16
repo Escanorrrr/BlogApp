@@ -19,7 +19,12 @@ namespace Web.Pages.Blog
         public BlogPostDto BlogPost { get; set; }
         public List<BlogPostDto> RelatedPosts { get; set; } = new();
         public List<CommentDto> Comments { get; set; } = new();
-        public bool IsAdmin { get; set; }
+        public bool IsAdmin { get; private set; }
+
+        // Düzenle/Sil butonları için yetki kontrolü
+        public bool CanEditPost => 
+            User.FindFirst("IsAdmin")?.Value == "True" || // Kullanıcı admin mi?
+            (BlogPost?.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0")); // Veya post sahibi mi?
 
         [BindProperty]
         public CommentCreateDto NewComment { get; set; }
@@ -34,9 +39,18 @@ namespace Web.Pages.Blog
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            IsAdmin = User.FindFirst("IsAdmin")?.Value == "True";
             try
             {
+                // JWT'den admin bilgisini al ve debug için yazdır
+                var adminClaim = User.FindFirst("IsAdmin")?.Value;
+                Console.WriteLine($"Admin claim değeri: {adminClaim}");
+                IsAdmin = adminClaim?.ToLower() == "true";
+                Console.WriteLine($"IsAdmin property değeri: {IsAdmin}");
+
+                // Kullanıcı ID'sini al ve debug için yazdır
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                Console.WriteLine($"User ID claim değeri: {userIdClaim}");
+
                 await SetAuthorizationHeader();
 
                 // Blog yazısını getir
@@ -48,6 +62,8 @@ namespace Web.Pages.Blog
                 }
 
                 var blogContent = await blogResponse.Content.ReadAsStringAsync();
+                Console.WriteLine($"Blog API yanıtı: {blogContent}"); // API yanıtını debug için yazdır
+
                 var blogResult = JsonSerializer.Deserialize<Result<BlogPostDto>>(blogContent, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
@@ -56,6 +72,13 @@ namespace Web.Pages.Blog
                 if (blogResult?.Success == true)
                 {
                     BlogPost = blogResult.Data;
+                    Console.WriteLine($"Blog post user ID: {BlogPost.UserId}"); // Blog post user ID'sini debug için yazdır
+
+                    // Eğer ImagePath sadece dosya adıysa, blog_photos/ ekle
+                    if (!string.IsNullOrEmpty(BlogPost.ImagePath) && !BlogPost.ImagePath.Contains("/"))
+                    {
+                        BlogPost.ImagePath = $"/images/blog_photos/{BlogPost.ImagePath}";
+                    }
 
                     // İlgili blog yazılarını getir
                     var relatedResponse = await _httpClient.GetAsync($"/BlogPost/related/{id}");
@@ -69,6 +92,14 @@ namespace Web.Pages.Blog
                         if (relatedResult?.Success == true)
                         {
                             RelatedPosts = relatedResult.Data;
+                            // İlgili postların fotoğraf yollarını düzenle
+                            foreach (var post in RelatedPosts)
+                            {
+                                if (!string.IsNullOrEmpty(post.ImagePath) && !post.ImagePath.Contains("/"))
+                                {
+                                    post.ImagePath = $"blog_photos/{post.ImagePath}";
+                                }
+                            }
                         }
                     }
 

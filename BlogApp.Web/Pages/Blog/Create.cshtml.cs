@@ -70,32 +70,7 @@ namespace Web.Pages.Blog
             {
                 await SetAuthorizationHeader();
 
-                // Önce resmi yükleyelim
-                if (!string.IsNullOrEmpty(BlogPost.ImageBase64))
-                {
-                    var imageUploadDto = new
-                    {
-                        ImageBase64 = BlogPost.ImageBase64,
-                        PhotoType = "BLOG_PHOTO"
-                    };
-
-                    var imageResponse = await _httpClient.PostAsJsonAsync("/Foto/Upload", imageUploadDto);
-                    if (imageResponse.IsSuccessStatusCode)
-                    {
-                        var imageContent = await imageResponse.Content.ReadAsStringAsync();
-                        var imageResult = JsonSerializer.Deserialize<Result<string>>(imageContent, new JsonSerializerOptions
-                        {
-                            PropertyNameCaseInsensitive = true
-                        });
-
-                        if (imageResult?.Success == true)
-                        {
-                            BlogPost.ImagePath = imageResult.Data;
-                        }
-                    }
-                }
-
-                // Blog yazısını oluşturalım
+                // Blog yazısını oluştur
                 var response = await _httpClient.PostAsJsonAsync("/BlogPost", BlogPost);
                 var content = await response.Content.ReadAsStringAsync();
 

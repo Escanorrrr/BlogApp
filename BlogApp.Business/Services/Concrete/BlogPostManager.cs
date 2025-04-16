@@ -38,7 +38,7 @@ namespace BlogApp.Business.Services.Concrete
                 Id = p.Id,
                 Title = p.Title,
                 Content = StripHtml(p.Content),
-                ImagePath = p.ImagePath,
+                ImagePath = "/images/blog_photos/" + p.ImagePath,
                 PublishedDate = p.PublishedDate,
                 CategoryId = p.CategoryId,
                 CategoryName = p.Category?.Name ?? "Kategorisiz",
@@ -63,7 +63,7 @@ namespace BlogApp.Business.Services.Concrete
                 Id = post.Id,
                 Title = post.Title,
                 Content = post.Content,
-                ImagePath = post.ImagePath,
+                ImagePath = "/images/blog_photos/"+post.ImagePath,
                 PublishedDate = post.PublishedDate,
                 CategoryName = post.Category?.Name ?? "Kategorisiz",
                 CategoryId = post.CategoryId,
@@ -85,21 +85,17 @@ namespace BlogApp.Business.Services.Concrete
         public async Task<Result<BlogPost>> AddAsync(BlogPostAddDto dto, int userId)
         {
             string? imagePath = null;
-            
+
             if (!string.IsNullOrEmpty(dto.ImageBase64))
             {
                 if (!_fotoService.IsBase64String(dto.ImageBase64))
                 {
                     return Result<BlogPost>.FailureResult("Geçersiz fotoğraf formatı. Lütfen geçerli bir base64 formatında fotoğraf gönderin.");
                 }
-                
+
                 try
                 {
-                    imagePath = _fotoService.Upload(dto.ImageBase64);
-                    if (string.IsNullOrEmpty(imagePath))
-                    {
-                        return Result<BlogPost>.FailureResult("Fotoğraf yükleme hatası: Dosya kaydedilemedi.");
-                    }
+                    imagePath = _fotoService.Upload(dto.ImageBase64, PhotoType.BLOG_PHOTO);
                 }
                 catch (Exception ex)
                 {
@@ -137,21 +133,17 @@ namespace BlogApp.Business.Services.Concrete
                 return Result<BlogPost>.FailureResult("Bu blog yazısını güncelleme yetkiniz yok.");
 
             string? imagePath = post.ImagePath;
-            
+
             if (!string.IsNullOrEmpty(dto.ImageBase64))
             {
                 if (!_fotoService.IsBase64String(dto.ImageBase64))
                 {
                     return Result<BlogPost>.FailureResult("Geçersiz fotoğraf formatı. Lütfen geçerli bir base64 formatında fotoğraf gönderin.");
                 }
-                
+
                 try
                 {
-                    imagePath = _fotoService.Upload(dto.ImageBase64);
-                    if (string.IsNullOrEmpty(imagePath))
-                    {
-                        return Result<BlogPost>.FailureResult("Fotoğraf yükleme hatası: Dosya kaydedilemedi.");
-                    }
+                    imagePath = _fotoService.Upload(dto.ImageBase64, PhotoType.BLOG_PHOTO);
                 }
                 catch (Exception ex)
                 {
@@ -258,7 +250,7 @@ namespace BlogApp.Business.Services.Concrete
                         Id = p.Id,
                         Title = p.Title,
                         Content = StripHtml(p.Content),
-                        ImagePath = p.ImagePath,
+                        ImagePath = "/blog_photos/" + p.ImagePath,
                         PublishedDate = p.PublishedDate,
                         CategoryId = p.CategoryId,
                         CategoryName = p.Category?.Name ?? "Kategorisiz",

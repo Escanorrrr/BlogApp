@@ -127,9 +127,16 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
-        builder => builder.WithOrigins("http://localhost:4200") // Replace with your frontend URL
-                           .AllowAnyHeader()
-                           .AllowAnyMethod());
+        builder => builder
+            .WithOrigins(
+                "http://localhost:4200",
+                "http://localhost:5115",
+                "https://localhost:7100",
+                "http://localhost:63681",
+                "https://localhost:44368"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod());
 });
 
 var app = builder.Build();

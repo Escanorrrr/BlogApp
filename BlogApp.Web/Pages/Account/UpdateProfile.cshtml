@@ -1,0 +1,95 @@
+@page
+@model Web.Pages.Account.UpdateProfileModel
+@{
+    ViewData["Title"] = "Profili Düzenle";
+}
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Profil Düzenle</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" id="updateProfileForm">
+                        <input type="hidden" asp-for="ProfileDto.Id" />
+                        <input type="hidden" asp-for="ProfileDto.ImageBase64" id="imageBase64Input" />
+
+                        <div class="text-center mb-4">
+                            <img id="profilePreview" src="@(string.IsNullOrEmpty(Model.ProfileDto.ImageBase64) ? "/images/default-profile.png" : $"data:image/jpeg;base64,{Model.ProfileDto.ImageBase64}")"
+                                 class="rounded-circle profile-image" style="width: 150px; height: 150px; object-fit: cover;" />
+                            
+                            <div class="mt-3">
+                                <label class="btn btn-outline-primary">
+                                    <i class="fas fa-camera"></i> Fotoğraf Seç
+                                    <input type="file" id="profileImage" style="display: none;" accept="image/*" onchange="handleImageUpload(this)" />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ProfileDto.Username" class="form-label">Kullanıcı Adı</label>
+                            <input asp-for="ProfileDto.Username" class="form-control" />
+                            <span asp-validation-for="ProfileDto.Username" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ProfileDto.Email" class="form-label">E-posta</label>
+                            <input asp-for="ProfileDto.Email" class="form-control" />
+                            <span asp-validation-for="ProfileDto.Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Değişiklikleri Kaydet
+                            </button>
+                            <a asp-page="/Account/Profile" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Geri Dön
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function handleImageUpload(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const base64String = e.target.result.split(',')[1];
+                    document.getElementById('imageBase64Input').value = base64String;
+                    document.getElementById('profilePreview').src = e.target.result;
+                };
+
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+}
+
+@section Styles {
+    <style>
+        .profile-image {
+            border: 3px solid #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+    </style>
+} 

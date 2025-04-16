@@ -1,0 +1,54 @@
+@page "{id:int}"
+@model Web.Pages.Blog.CategoryModel
+
+<div class="container mt-4">
+    <h2 class="mb-4">@Model.CategoryName</h2>
+
+    @if (Model.Posts != null && Model.Posts.Any())
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var post in Model.Posts)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        @if (!string.IsNullOrEmpty(post.ImagePath))
+                        {
+                            <img src="/images/blog_photos/@post.ImagePath" class="card-img-top" alt="@post.Title" style="height: 200px; object-fit: cover;">
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@post.Title</h5>
+                            <p class="card-text text-muted">
+                                <small>
+                                    <i class="fas fa-user"></i> @post.AuthorUsername
+                                    <span class="mx-2">|</span>
+                                    <i class="fas fa-calendar"></i> @post.PublishedDate.ToString("dd MMM yyyy")
+                                </small>
+                            </p>
+                            <p class="card-text">@(post.Content?.Length > 150 ? post.Content.Substring(0, 150) + "..." : post.Content)</p>
+                            <a href="/Blog/Details/@post.Id" class="btn btn-primary">
+                                <i class="fas fa-book-reader"></i> Devamını Oku
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> Bu kategoride henüz blog yazısı bulunmuyor.
+        </div>
+    }
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+} 

@@ -32,9 +32,6 @@ namespace BlogApp.Entities.Dtos
         /// </summary>
         public string? ImageBase64 { get; set; }
 
-        /// <summary>
-        /// Kullanıcının profil fotoğrafı yolu
-        /// </summary>
-        public string? ImagePath { get; set; }
+     
     }
 } 

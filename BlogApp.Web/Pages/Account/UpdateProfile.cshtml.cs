@@ -1,24 +1,24 @@
+using BlogApp.Entities.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Text.Json;
-using System.Net.Http.Headers;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+using System.Text.Json;
+using Web.Models.Dtos.User;
 using Web.Models.Responses;
-using BlogApp.Entities.Dtos;
 
 namespace Web.Pages.Account
 {
     [Authorize]
-    public class EditModel : PageModel
+    public class UpdateProfileModel : PageModel
     {
         private readonly HttpClient _httpClient;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         [BindProperty]
-        public UserUpdateDto UserUpdateDto { get; set; }
+        public UpdateProfileDto ProfileDto { get; set; }
 
-        public EditModel(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
+        public UpdateProfileModel(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClientFactory.CreateClient("BlogApi");
             _httpContextAccessor = httpContextAccessor;
@@ -34,15 +34,20 @@ namespace Web.Pages.Account
 
             try
             {
-                await SetAuthorizationHeader();
+                var token = _httpContextAccessor.HttpContext.Request.Cookies["token"];
+                if (!string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                }
+
                 var response = await _httpClient.GetAsync($"api/User/{userId}");
                 var responseContent = await response.Content.ReadAsStringAsync();
 
-                Console.WriteLine($"Get User Response: {responseContent}"); // Debug için
+                Console.WriteLine($"API Response: {responseContent}"); // Debug log
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    TempData["ErrorMessage"] = $"Kullanıcı bilgileri alınamadı: {responseContent}";
+                    TempData["ErrorMessage"] = "Kullanıcı bilgileri alınamadı.";
                     return RedirectToPage("/Account/Profile");
                 }
 
@@ -57,47 +62,46 @@ namespace Web.Pages.Account
                     return RedirectToPage("/Account/Profile");
                 }
 
-                UserUpdateDto = new UserUpdateDto
+                ProfileDto = new UpdateProfileDto
                 {
-                    Id = int.Parse(userId),
+                    Id = result.Data.Id,
                     Username = result.Data.Username,
                     Email = result.Data.Email,
-                    IsAdmin = result.Data.IsAdmin
+                   
                 };
 
                 return Page();
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Bir hata oluştu: " + ex.Message;
+                Console.WriteLine($"Error: {ex.Message}"); // Debug log
+                TempData["ErrorMessage"] = $"Bir hata oluştu: {ex.Message}";
                 return RedirectToPage("/Account/Profile");
             }
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId))
+            if (!ModelState.IsValid)
             {
-                return RedirectToPage("/Account/Login");
+                return Page();
             }
 
             try
             {
-                // UserUpdateDto'ya ID'yi ekle
-                UserUpdateDto.Id = int.Parse(userId);
+                var token = _httpContextAccessor.HttpContext.Request.Cookies["token"];
+                if (!string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                }
 
-                // Debug için request verilerini logla
-                Console.WriteLine($"Request URL: {_httpClient.BaseAddress}api/User/{userId}");
-                Console.WriteLine($"Request Data: {JsonSerializer.Serialize(UserUpdateDto)}");
+                Console.WriteLine($"Sending update request for user ID: {ProfileDto.Id}"); // Debug log
+                Console.WriteLine($"Image Base64 length: {ProfileDto.ImageBase64?.Length ?? 0}"); // Debug log
 
-                await SetAuthorizationHeader();
-                var response = await _httpClient.PutAsJsonAsync($"api/User/{userId}", UserUpdateDto);
+                var response = await _httpClient.PutAsJsonAsync($"api/User/update/{ProfileDto.Id}", ProfileDto);
                 var responseContent = await response.Content.ReadAsStringAsync();
-                
-                // Debug için response'u logla
-                Console.WriteLine($"Response Status: {response.StatusCode}");
-                Console.WriteLine($"Response Content: {responseContent}");
+
+                Console.WriteLine($"Update Response: {responseContent}"); // Debug log
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -111,28 +115,11 @@ namespace Web.Pages.Account
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Exception: {ex.Message}"); // Debug için
-                Console.WriteLine($"Stack Trace: {ex.StackTrace}"); // Debug için
-                
-                ModelState.AddModelError(string.Empty, "Bir hata oluştu: " + ex.Message);
+                Console.WriteLine($"Update Error: {ex.Message}"); // Debug log
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}"); // Debug log
+                ModelState.AddModelError(string.Empty, $"Bir hata oluştu: {ex.Message}");
                 return Page();
             }
         }
-
-        private async Task SetAuthorizationHeader()
-        {
-            var token = _httpContextAccessor.HttpContext.Request.Cookies["token"];
-            if (!string.IsNullOrEmpty(token))
-            {
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            }
-        }
-    }
-
-    public class ApiResponse<T>
-    {
-        public T Data { get; set; }
-        public string Message { get; set; }
-        public bool Success { get; set; }
     }
 } 

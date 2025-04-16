@@ -12,128 +12,114 @@ namespace BlogApp.Business.Services.Concrete
     public class FotoService : IFotoService
     {
         private readonly BlogDbContext _context;
-        private readonly string _uploadPath;
+        private readonly string _blogPhotosPath;
+        private readonly string _userPhotosPath;
 
         public FotoService(BlogDbContext context)
         {
             _context = context;
-            _uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
             
-            if (!Directory.Exists(_uploadPath))
-            {
-                Directory.CreateDirectory(_uploadPath);
-            }
+            // bin/Debug/net8.0'dan solution dizinine git (4 klasör yukarı)
+            var solutionPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..")); 
+            
+            // Web projesinin wwwroot/images dizinini bul
+            var webRootPath = Path.Combine(solutionPath, "BlogApp.Web", "wwwroot", "images");
+            
+            // Blog ve kullanıcı fotoğrafları için dizinleri ayarla
+            _blogPhotosPath = Path.Combine(webRootPath, "blog_photos");
+            _userPhotosPath = Path.Combine(webRootPath, "user_photos");
+            
+            // Dizinlerin varlığını kontrol et ve yoksa oluştur
+            if (!Directory.Exists(webRootPath))
+                Directory.CreateDirectory(webRootPath);
+            if (!Directory.Exists(_blogPhotosPath))
+                Directory.CreateDirectory(_blogPhotosPath);
+            if (!Directory.Exists(_userPhotosPath))
+                Directory.CreateDirectory(_userPhotosPath);
         }
-        
-        public string Upload(string base64String)
+
+        public string Upload(string base64String, PhotoType photoType)
         {
-            try
+            //Metadata'yı temizle
+            var base64Data = base64String.Contains(",") ? base64String.Split(',')[1] : base64String;
+
+            //Base64 data'ı byte dizisine çevir (byte array bir fotoğrafa karşılık gelir)
+            byte[] bytes = Convert.FromBase64String(base64Data);
+
+            //Base 64 stringten uzantıyı çıkart.
+            string type = ExtractTypeFromBase64(base64String);
+
+            //Fotoğraf dosya adı oluştur (UUID)
+            string fileName = GenerateFileNameForPhoto(type);
+
+            //Fotoğrafın kaydedileceği dizin - fotoğraf tipine göre değişir
+            string targetDirectory = photoType == PhotoType.BLOG_PHOTO ? _blogPhotosPath : _userPhotosPath;
+
+            //Fotoğrafın tam dosya yolu
+            string filePath = Path.Combine(targetDirectory, fileName);
+
+            //Klasörün varlığını kontrol et
+            if (!Directory.Exists(targetDirectory))
             {
-                if (!IsBase64String(base64String))
-                {
-                    return null;
-                }
-
-                var fileType = ExtractTypeFromBase64(base64String);
-                if (string.IsNullOrEmpty(fileType))
-                {
-                    return null;
-                }
-
-                var fileName = GenerateFileNameForPhoto(fileType);
-                var filePath = Path.Combine(_uploadPath, fileName);
-
-                // Base64'ü byte dizisine çevir
-                var base64Data = base64String.Split(',')[1];
-                var imageBytes = Convert.FromBase64String(base64Data);
-
-                // Dosyayı kaydet
-                File.WriteAllBytes(filePath, imageBytes);
-
-                return $"/images/{fileName}"; // /images/dosya.jpg formatında dön
+                Directory.CreateDirectory(targetDirectory);
             }
-            catch (Exception ex)
-            {
-                // Hata loglanabilir
-                return null;
-            }
+            // Dosyayı yaz
+            File.WriteAllBytes(filePath, bytes);
+            //Filepath return edilir bu sayede dosyanın filepath bilgisi dönülmüş olur.
+            return fileName;
         }
 
         public string GenerateFileNameForPhoto(string type)
         {
             string uniqueFileName = Guid.NewGuid().ToString();
-            return uniqueFileName + (!string.IsNullOrEmpty(type) ? type : ".jpg");
+
+            if (string.IsNullOrEmpty(type))
+            {
+                type = ".jpg"; // Varsayılan uzantı
+            }
+
+            return uniqueFileName + type;
         }
 
         public string ExtractTypeFromBase64(string base64String)
         {
-            if (string.IsNullOrEmpty(base64String) || !base64String.Contains("data:"))
-                return ".jpg";
+            // MIME türünden dosya uzantısını al
+            string fileExtension = base64String.Contains("data:")
+                ? "." + base64String.Split(',')[0] // "data:image/jpeg;base64"
+                    .Split(':')[1]                // "image/jpeg;base64"
+                    .Split(';')[0]                // "image/jpeg"
+                    .Split('/')[1]                // "jpeg"
+                : ".jpg"; // Eğer bir tür bulunamazsa varsayılan .jpg dön
 
-            try
-            {
-                return "." + base64String.Split(',')[0]
-                    .Split(':')[1]
-                    .Split(';')[0]
-                    .Split('/')[1];
-            }
-            catch
-            {
-                return ".jpg";
-            }
+            return fileExtension;
         }
-        
+
         public bool IsBase64String(string base64String)
         {
             if (string.IsNullOrEmpty(base64String))
                 return false;
 
-            if (!base64String.Contains("data:image/") || !base64String.Contains(";base64,"))
-                return false;
+            // Base64 görüntü formatına benziyor mu temel kontrol
+            if (base64String.Contains("data:image/") && base64String.Contains(";base64,"))
+            {
+                // Basit bir doğrulama denemesi
+                try
+                {
+                    // Base64 kısmını ayır
+                    var base64Data = base64String.Split(',')[1];
+                    // Base64 string'i byte array'e çevirmeyi dene
+                    Convert.FromBase64String(base64Data);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
 
-            try
-            {
-                var base64Data = base64String.Split(',')[1];
-                Convert.FromBase64String(base64Data);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return false;
         }
 
-        public async Task<Result<string>> UploadAsync(string base64String)
-        {
-            try
-            {
-                if (!IsBase64String(base64String))
-                {
-                    return Result<string>.FailureResult("Geçersiz resim formatı.");
-                }
-
-                var fileType = ExtractTypeFromBase64(base64String);
-                if (string.IsNullOrEmpty(fileType))
-                {
-                    return Result<string>.FailureResult("Resim türü belirlenemedi.");
-                }
-
-                var fileName = GenerateFileNameForPhoto(fileType);
-                var filePath = Path.Combine(_uploadPath, fileName);
-
-                // Base64'ü byte dizisine çevir
-                var base64Data = base64String.Split(',')[1];
-                var imageBytes = Convert.FromBase64String(base64Data);
-
-                // Dosyayı kaydet
-                await File.WriteAllBytesAsync(filePath, imageBytes);
-
-                return Result<string>.SuccessResult($"/images/{fileName}"); // /images/dosya.jpg formatında dön
-            }
-            catch (Exception ex)
-            {
-                return Result<string>.FailureResult($"Resim yüklenirken bir hata oluştu: {ex.Message}");
-            }
-        }
+     
     }
 } 

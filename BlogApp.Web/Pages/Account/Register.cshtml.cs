@@ -1,18 +1,20 @@
 using BlogApp.Entities.Dtos;
-using BlogApp.Business.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using BlogApp.Business.Services.Abstract;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace Web.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly IUserService _userService;
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly HttpClient _httpClient;
 
-        public RegisterModel(IUserService userService)
+        public RegisterModel(IHttpClientFactory httpClientFactory)
         {
-            _userService = userService;
+            _httpClientFactory = httpClientFactory;
+            _httpClient = _httpClientFactory.CreateClient("BlogApi");
         }
 
         [BindProperty]
@@ -23,17 +25,53 @@ namespace Web.Pages.Account
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-                return Page();
-
-            var result = await _userService.RegisterAsync(RegisterDto);
-
-            if (!result.Success)
             {
-                ModelState.AddModelError(string.Empty, result.Message);
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        Console.WriteLine($"ModelState Error: {error.ErrorMessage}");
+                    }
+                }
                 return Page();
             }
 
-            return RedirectToPage("/Account/Login");
+            try
+            {
+                var endpoint = "Auth/register";
+                Console.WriteLine($"Request URL: {_httpClient.BaseAddress}{endpoint}");
+                Console.WriteLine($"Request Data: {JsonSerializer.Serialize(RegisterDto)}");
+
+                var response = await _httpClient.PostAsJsonAsync(endpoint, RegisterDto);
+                var responseContent = await response.Content.ReadAsStringAsync();
+                
+                Console.WriteLine($"Response Status: {response.StatusCode}");
+                Console.WriteLine($"Response Content: {responseContent}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToPage("/Account/Login");
+                }
+                
+                try 
+                {
+                    var error = JsonSerializer.Deserialize<Dictionary<string, object>>(responseContent);
+                    ModelState.AddModelError(string.Empty, error?["message"]?.ToString() ?? "Kayıt işlemi başarısız oldu.");
+                }
+                catch
+                {
+                    ModelState.AddModelError(string.Empty, responseContent);
+                }
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                
+                ModelState.AddModelError(string.Empty, "Bir hata oluştu: " + ex.Message);
+                return Page();
+            }
         }
     }
 }

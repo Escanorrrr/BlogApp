@@ -23,7 +23,7 @@ namespace BlogApp.Business.Services.Concrete
         public async Task<Result<UserDto>> AddAsync(UserAddDto userAddDto)
         {
             string? imagePath = null;
-            
+
             // Eğer base64 formatında fotoğraf gönderildiyse işle
             if (!string.IsNullOrEmpty(userAddDto.ImageBase64))
             {
@@ -31,14 +31,10 @@ namespace BlogApp.Business.Services.Concrete
                 {
                     return Result<UserDto>.FailureResult("Geçersiz fotoğraf formatı. Lütfen geçerli bir base64 formatında fotoğraf gönderin.");
                 }
-                
+
                 try
                 {
-                    imagePath = _fotoService.Upload(userAddDto.ImageBase64);
-                    if (string.IsNullOrEmpty(imagePath))
-                    {
-                        return Result<UserDto>.FailureResult("Fotoğraf yükleme hatası: Dosya kaydedilemedi.");
-                    }
+                    imagePath = _fotoService.Upload(userAddDto.ImageBase64, PhotoType.USER_PHOTO);
                 }
                 catch (Exception ex)
                 {
@@ -50,7 +46,7 @@ namespace BlogApp.Business.Services.Concrete
             {
                 Username = userAddDto.Username,
                 Email = userAddDto.Email,
-                Password = PasswordHasher.Hash("Default123!"), 
+                Password = PasswordHasher.Hash("Default123!"),
                 CreatedAt = DateTime.Now,
                 IsAdmin = userAddDto.IsAdmin,
                 ImagePath = imagePath
@@ -129,7 +125,7 @@ namespace BlogApp.Business.Services.Concrete
                 Username = user.Username,
                 Email = user.Email,
                 IsAdmin = user.IsAdmin,
-                ImagePath = user.ImagePath,
+                ImagePath = "user_photos/" + user.ImagePath,
                 CreatedAt = user.CreatedAt
             };
 
@@ -145,7 +141,7 @@ namespace BlogApp.Business.Services.Concrete
             // Temel kullanıcı bilgilerini her zaman güncelle
             user.Username = userUpdateDto.Username;
             user.Email = userUpdateDto.Email;
-            
+
             // Admin yetkisi kontrolü
             if (isUpdaterAdmin)
             {
@@ -169,10 +165,10 @@ namespace BlogApp.Business.Services.Concrete
                 {
                     return Result<UserDto>.FailureResult("Geçersiz fotoğraf formatı. Lütfen geçerli bir base64 formatında fotoğraf gönderin.");
                 }
-                
+
                 try
                 {
-                    string imagePath = _fotoService.Upload(userUpdateDto.ImageBase64);
+                    string imagePath = _fotoService.Upload(userUpdateDto.ImageBase64, PhotoType.USER_PHOTO);
                     user.ImagePath = imagePath;
                 }
                 catch (Exception ex)
@@ -220,7 +216,7 @@ namespace BlogApp.Business.Services.Concrete
                 return Result<User>.FailureResult("Bu email ile kayıtlı bir kullanıcı zaten var.");
 
             string? imagePath = null;
-            
+
             // Eğer base64 formatında fotoğraf gönderildiyse işle
             if (!string.IsNullOrEmpty(dto.ImageBase64))
             {
@@ -228,10 +224,10 @@ namespace BlogApp.Business.Services.Concrete
                 {
                     return Result<User>.FailureResult("Geçersiz fotoğraf formatı. Lütfen geçerli bir base64 formatında fotoğraf gönderin.");
                 }
-                
+
                 try
                 {
-                    imagePath = _fotoService.Upload(dto.ImageBase64);
+                    imagePath = _fotoService.Upload(dto.ImageBase64, PhotoType.USER_PHOTO);
                 }
                 catch (Exception ex)
                 {
@@ -252,7 +248,6 @@ namespace BlogApp.Business.Services.Concrete
             var addedUser = await _userRepository.AddAsync(user);
             return Result<User>.SuccessResult(addedUser, "Kayıt başarılı.");
         }
-
         public async Task<Result<User>> BanUserAsync(int userId)
         {
             var user = await _userRepository.GetByIdAsync(userId);
