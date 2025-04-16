@@ -1,0 +1,13 @@
+# Build klasörleri
+bin/
+obj/
+
+# VS ayarlarý
+.vs/
+
+# Kiþisel ayarlar
+*.user
+*.suo
+
+# Yayýnlama klasörleri
+publish/

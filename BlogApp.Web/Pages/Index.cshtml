@@ -1,0 +1,82 @@
+﻿@page
+@using BlogApp.Web.Pages
+@model IndexModel
+@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<div class="container mt-4">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="row mb-4">
+        <div class="col">
+            <h1>Blog Yazıları</h1>
+        </div>
+        <div class="col text-end">
+            <a href="/Blog/Create" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Yeni Blog Yazısı
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var post in Model.BlogPosts)
+        {
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100">
+                    @if (!string.IsNullOrEmpty(post.ImagePath))
+                    {
+                        <img src="@post.ImagePath" class="card-img-top" alt="@post.Title" style="height: 200px; object-fit: cover;">
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@post.Title</h5>
+                        <p class="card-text">
+                            @(post.Content.Length > 150 ? post.Content.Substring(0, 150) + "..." : post.Content)
+                        </p>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-user"></i> @post.AuthorUsername<br>
+                                <i class="fas fa-calendar"></i> @post.PublishedDate.ToString("dd.MM.yyyy")
+                            </small>
+                            <a href="/Blog/Details/@post.Id" class="btn btn-sm btn-outline-primary">
+                                Devamını Oku
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (!Model.BlogPosts.Any())
+    {
+        <div class="alert alert-info">
+            Henüz blog yazısı bulunmamaktadır.
+        </div>
+    }
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+}

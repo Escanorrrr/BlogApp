@@ -1,0 +1,57 @@
+@page
+@model BlogApp.Web.Pages.Blog.IndexModel
+@{
+    ViewData["Title"] = "Blog Yazıları";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>@ViewData["Title"]</h1>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a asp-page="./Create" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Yeni Blog Yazısı
+            </a>
+        }
+    </div>
+
+    @if (Model.BlogPosts != null && Model.BlogPosts.Any())
+    {
+        <div class="row">
+            @foreach (var post in Model.BlogPosts)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        @if (!string.IsNullOrEmpty(post.ImagePath))
+                        {
+                            <img src="@post.ImagePath" class="card-img-top" alt="@post.Title" 
+                                 style="height: 200px; object-fit: cover;">
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@post.Title</h5>
+                            <p class="card-text text-muted small">
+                                <i class="fas fa-user"></i> @post.AuthorUsername |
+                                <i class="fas fa-calendar"></i> @post.PublishedDate.ToString("dd MMMM yyyy") |
+                                <i class="fas fa-folder"></i> @post.CategoryName
+                            </p>
+                            <p class="card-text">@(post.Content?.Length > 150 ? post.Content.Substring(0, 150) + "..." : post.Content)</p>
+                            <a asp-page="./Details" asp-route-id="@post.Id" class="btn btn-primary">
+                                Devamını Oku
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            Henüz blog yazısı bulunmamaktadır.
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
+} 

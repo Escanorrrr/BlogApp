@@ -1,0 +1,98 @@
+@page "{id:int}"
+@model Web.Pages.Blog.EditModel
+@{
+    ViewData["Title"] = "Blog Yazısı Düzenle";
+}
+
+<div class="container mt-4">
+    <h2>Blog Yazısı Düzenle</h2>
+
+    @if (!ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <ul>
+                @foreach (var modelState in ViewData.ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                }
+            </ul>
+        </div>
+    }
+
+    <form method="post">
+        <input type="hidden" asp-for="BlogPost.Id" />
+        
+        <div class="form-group mb-3">
+            <label asp-for="BlogPost.Title">Başlık</label>
+            <input asp-for="BlogPost.Title" class="form-control" />
+            <span asp-validation-for="BlogPost.Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="BlogPost.Content">İçerik</label>
+            <textarea asp-for="BlogPost.Content" class="form-control" rows="10"></textarea>
+            <span asp-validation-for="BlogPost.Content" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="BlogPost.CategoryId">Kategori</label>
+            <select asp-for="BlogPost.CategoryId" asp-items="Model.Categories" class="form-control">
+                <option value="">Kategori Seçin</option>
+            </select>
+            <span asp-validation-for="BlogPost.CategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label class="form-label">Görsel</label>
+            <input type="file" class="form-control" id="imageInput" accept="image/*" onchange="convertToBase64()" />
+            <input type="hidden" asp-for="BlogPost.ImageBase64" id="imageBase64Input" />
+            <small class="text-muted">Maksimum dosya boyutu: 5MB. İzin verilen formatlar: JPG, PNG, GIF</small>
+            @if (!string.IsNullOrEmpty(Model.CurrentImagePath))
+            {
+                <div class="mt-2">
+                    <img src="/images/@Model.CurrentImagePath" alt="Mevcut Resim" style="max-width: 200px;" class="img-thumbnail" />
+                </div>
+            }
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+            <a asp-page="/Blog/Details" asp-route-id="@Model.BlogPost.Id" class="btn btn-secondary">İptal</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function convertToBase64() {
+            const fileInput = document.getElementById('imageInput');
+            const file = fileInput.files[0];
+            if (file) {
+                // Dosya tipi kontrolü
+                const fileType = file.type.toLowerCase();
+                if (!fileType.match(/^image\/(jpeg|jpg|png|gif)$/)) {
+                    alert('Lütfen geçerli bir resim dosyası seçin (JPG, PNG veya GIF)');
+                    fileInput.value = '';
+                    return;
+                }
+
+                // Dosya boyutu kontrolü (5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Dosya boyutu 5MB\'dan küçük olmalıdır');
+                    fileInput.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imageBase64Input').value = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+} 

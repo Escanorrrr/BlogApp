@@ -1,0 +1,68 @@
+@page
+@model Web.Pages.Blog.CreateModel
+@{
+    ViewData["Title"] = "Yeni Blog Yazısı";
+}
+
+<div class="container mt-4">
+    <h1>@ViewData["Title"]</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label asp-for="BlogPost.Title" class="form-label">Başlık</label>
+            <input asp-for="BlogPost.Title" class="form-control" />
+            <span asp-validation-for="BlogPost.Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="BlogPost.CategoryId" class="form-label">Kategori</label>
+            <select asp-for="BlogPost.CategoryId" class="form-select">
+                <option value="">Kategori Seçin</option>
+                @foreach (var category in Model.Categories)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            </select>
+            <span asp-validation-for="BlogPost.CategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="BlogPost.Content" class="form-label">İçerik</label>
+            <textarea asp-for="BlogPost.Content" class="form-control" rows="10"></textarea>
+            <span asp-validation-for="BlogPost.Content" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="BlogPost.ImageBase64" class="form-label">Görsel</label>
+            <input type="file" class="form-control" id="imageInput" accept="image/*" />
+            <input type="hidden" asp-for="BlogPost.ImageBase64" id="imageBase64" />
+            <small class="text-muted">Maksimum dosya boyutu: 5MB. İzin verilen formatlar: JPG, PNG, GIF</small>
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Yayınla</button>
+            <a asp-page="/Index" class="btn btn-secondary">İptal</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('imageInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Dosya boyutu 5MB\'dan büyük olamaz.');
+                    this.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('imageBase64').value = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+} 

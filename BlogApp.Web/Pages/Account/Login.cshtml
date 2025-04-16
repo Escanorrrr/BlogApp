@@ -1,0 +1,47 @@
+@page
+@model BlogApp.Web.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Giriş Yap";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">@ViewData["Title"]</h2>
+                    
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="LoginDto.Email" class="form-label">E-posta</label>
+                            <input asp-for="LoginDto.Email" class="form-control" type="email" />
+                            <span asp-validation-for="LoginDto.Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="LoginDto.Password" class="form-label">Şifre</label>
+                            <input asp-for="LoginDto.Password" class="form-control" type="password" />
+                            <span asp-validation-for="LoginDto.Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Giriş Yap</button>
+                        </div>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <div class="text-center">
+                        <p class="mb-0">Hesabınız yok mu? <a asp-page="/Account/Register" class="text-decoration-none">Kayıt Ol</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,46 @@
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4">@ViewData["Title"]</h2>
+                <form method="post">
+                    <div class="mb-3">
+                        <label asp-for="RegisterDto.Username" class="form-label">Kullanıcı Adı</label>
+                        <input asp-for="RegisterDto.Username" class="form-control" />
+                        <span asp-validation-for="RegisterDto.Username" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="RegisterDto.Email" class="form-label">E-posta</label>
+                        <input asp-for="RegisterDto.Email" class="form-control" />
+                        <span asp-validation-for="RegisterDto.Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="RegisterDto.Password" class="form-label">Şifre</label>
+                        <input asp-for="RegisterDto.Password" class="form-control" type="password" />
+                        <span asp-validation-for="RegisterDto.Password" class="text-danger"></span>
+                        <small class="form-text text-muted">
+                            Şifreniz en az 6 karakter uzunluğunda olmalı ve en az bir büyük harf, bir küçük harf, 
+                            bir rakam ve bir özel karakter içermelidir.
+                        </small>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+                    </div>
+                </form>
+                <div class="text-center mt-3">
+                    <p>Zaten hesabınız var mı? <a asp-page="/Account/Login">Giriş Yap</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
