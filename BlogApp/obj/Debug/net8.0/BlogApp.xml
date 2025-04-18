@@ -1,0 +1,208 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BlogApp</name>
+    </assembly>
+    <members>
+        <member name="T:BlogApp.Controllers.AuthController">
+            <summary>
+            Kullanıcı kimlik doğrulama ve kayıt işlemleri için API endpoints.
+            </summary>
+        </member>
+        <member name="M:BlogApp.Controllers.AuthController.#ctor(IUserService,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            AuthController yapıcı metodu.
+            </summary>
+            <param name="userService">Kullanıcı işlemleri servis arayüzü</param>
+            <param name="configuration">Yapılandırma bilgisi</param>
+        </member>
+        <member name="M:BlogApp.Controllers.AuthController.Register(BlogApp.Entities.Dtos.RegisterDto)">
+            <summary>
+            Yeni bir kullanıcı kaydı oluşturur.
+            </summary>
+            <param name="dto">Kayıt için kullanıcı bilgileri</param>
+            <returns>Kayıt işlemi sonucu ve kullanıcı bilgileri</returns>
+        </member>
+        <member name="M:BlogApp.Controllers.AuthController.Login(BlogApp.Entities.Dtos.LoginDto)">
+            <summary>
+            Kullanıcı girişi yapar ve JWT token döner.
+            </summary>
+            <param name="dto">Giriş bilgileri</param>
+            <returns>JWT token ve kullanıcı bilgileri</returns>
+        </member>
+        <member name="T:BlogApp.Controllers.BlogPostController">
+            <summary>
+            Blog yazıları yönetimi için API endpoints sunan controller.
+            Blog yazısı ekleme, güncelleme, silme ve listeleme işlemlerini yönetir.
+            </summary>
+        </member>
+        <member name="M:BlogApp.Controllers.BlogPostController.#ctor(BlogApp.Business.Services.Abstract.IBlogPostService)">
+            <summary>
+            BlogPostController yapıcı metodu.
+            </summary>
+            <param name="blogPostService">Blog yazıları işlemleri servis arayüzü</param>
+        </member>
+        <member name="M:BlogApp.Controllers.BlogPostController.GetAll">
+            <summary>
+            Tüm blog yazılarını getirir.
+            </summary>
+            <returns>Blog yazılarının listesi</returns>
+        </member>
+        <member name="M:BlogApp.Controllers.BlogPostController.Get(System.Int32)">
+            <summary>
+            ID'ye göre blog yazısı getirir.
+            </summary>
+            <param name="id">Blog yazısının ID'si</param>
+            <returns>Blog yazısı</returns>
+        </member>
+        <member name="M:BlogApp.Controllers.BlogPostController.Update(BlogApp.Entities.Dtos.BlogPostUpdateDto)">
+            <summary>
+            Blog yazısını günceller.
+            ImageBase64 alanı ile resim yükleyebilirsiniz.
+            </summary>
+            <param name="dto">Güncellenecek blog yazısı bilgileri</param>
+            <returns>Güncellenen blog yazısı</returns>
+        </member>
+        <member name="M:BlogApp.Controllers.BlogPostController.Delete(System.Int32)">
+            <summary>
+            Blog yazısını siler.
+            </summary>
+            <param name="id">Silinecek blog yazısının ID'si</param>
+            <returns>İşlem sonucu</returns>
+        </member>
+        <member name="M:BlogApp.Controllers.BlogPostController.Add(BlogApp.Entities.Dtos.BlogPostAddDto)">
+            <summary>
+            Yeni bir blog yazısı ekler.
+            ImageBase64 alanı ile resim yükleyebilirsiniz.
+            </summary>
+            <param name="dto">Eklenecek blog yazısı bilgileri</param>
+            <returns>Eklenen blog yazısı</returns>
+        </member>
+        <member name="M:BlogApp.Controllers.BlogPostController.GetByCategory(System.Int32)">
+            <summary>
+            Belirli bir kategoriye ait blog yazılarını getirir.
+            </summary>
+            <param name="categoryId">Kategori ID'si</param>
+            <returns>Belirtilen kategoriye ait blog yazıları listesi</returns>
+        </member>
+        <member name="M:BlogApp.Controllers.BlogPostController.GetMyPosts">
+            <summary>
+            Giriş yapmış kullanıcının blog yazılarını getirir.
+            </summary>
+            <returns>Kullanıcının blog yazıları listesi</returns>
+        </member>
+        <member name="M:BlogApp.Controllers.CategoryController.GetAll">
+            <summary>
+            Tüm kategorileri getirir.
+            </summary>
+            <returns>Kategori listesi</returns>
+        </member>
+        <member name="T:BlogApp.Controllers.CommentController">
+            <summary>
+            Yorum yönetimi için API endpoints sunan controller.
+            Yorum ekleme, güncelleme, silme ve listeleme işlemlerini yönetir.
+            </summary>
+        </member>
+        <member name="M:BlogApp.Controllers.CommentController.#ctor(BlogApp.Business.Services.Abstract.ICommentService)">
+            <summary>
+            CommentController yapıcı metodu.
+            </summary>
+            <param name="commentService">Yorum işlemleri servis arayüzü</param>
+        </member>
+        <member name="M:BlogApp.Controllers.CommentController.GetById(System.Int32)">
+            <summary>
+            Belirtilen ID'ye sahip yorumu getirir.
+            </summary>
+            <param name="id">Yorum ID'si</param>
+            <returns>Yorum detayları</returns>
+        </member>
+        <member name="M:BlogApp.Controllers.CommentController.GetAll">
+            <summary>
+            Tüm yorumları listeler. Sadece admin yetkisi ile erişilebilir.
+            </summary>
+            <returns>Tüm yorumların listesi</returns>
+        </member>
+        <member name="M:BlogApp.Controllers.CommentController.GetByBlogPostId(System.Int32)">
+            <summary>
+            Belirli bir blog yazısına ait yorumları getirir.
+            </summary>
+            <param name="blogPostId">Blog yazısı ID'si</param>
+            <returns>Belirtilen blog yazısına ait yorumların listesi</returns>
+        </member>
+        <member name="M:BlogApp.Controllers.CommentController.Add(BlogApp.Entities.DTOs.CommentCreateDto)">
+            <summary>
+            Yeni bir yorum ekler.
+            </summary>
+            <param name="commentCreateDto">Eklenecek yorum bilgileri</param>
+            <returns>Eklenen yorum bilgileri</returns>
+        </member>
+        <member name="M:BlogApp.Controllers.CommentController.Update(BlogApp.Entities.DTOs.CommentUpdateDto)">
+            <summary>
+            Mevcut bir yorumu günceller.
+            </summary>
+            <param name="commentUpdateDto">Güncellenecek yorum bilgileri</param>
+            <returns>Güncellenen yorum bilgileri</returns>
+        </member>
+        <member name="M:BlogApp.Controllers.CommentController.Delete(System.Int32)">
+            <summary>
+            Belirtilen ID'ye sahip yorumu siler.
+            </summary>
+            <param name="id">Silinecek yorum ID'si</param>
+            <returns>Silme işlemi sonucu</returns>
+        </member>
+        <member name="T:BlogApp.Controllers.UserController">
+            <summary>
+            Kullanıcı yönetimi için API endpoints sunan controller.
+            Kullanıcı oluşturma, güncelleme, silme ve listeleme işlemlerini yönetir.
+            </summary>
+        </member>
+        <member name="M:BlogApp.Controllers.UserController.#ctor(IUserService)">
+            <summary>
+            UserController yapıcı metodu.
+            </summary>
+            <param name="userService">Kullanıcı işlemleri servis arayüzü</param>
+        </member>
+        <member name="M:BlogApp.Controllers.UserController.GetUser(System.Int32)">
+            <summary>
+            Belirtilen ID'ye sahip kullanıcıyı getirir.
+            </summary>
+            <param name="id">Kullanıcı ID'si</param>
+            <returns>Kullanıcı detayları</returns>
+        </member>
+        <member name="M:BlogApp.Controllers.UserController.GetAll">
+            <summary>
+            Tüm kullanıcıları listeler.
+            </summary>
+            <returns>Kullanıcı listesi</returns>
+        </member>
+        <member name="M:BlogApp.Controllers.UserController.Add(BlogApp.Entities.Dtos.UserAddDto)">
+            <summary>
+            Yeni bir kullanıcı ekler.
+            </summary>
+            <param name="userDto">Eklenecek kullanıcı bilgileri</param>
+            <returns>Eklenen kullanıcı bilgileri</returns>
+        </member>
+        <member name="M:BlogApp.Controllers.UserController.Update(System.Int32,BlogApp.Entities.Dtos.UserUpdateDto)">
+            <summary>
+            Mevcut bir kullanıcıyı günceller.
+            </summary>
+            <param name="id">Güncellenecek kullanıcı ID'si</param>
+            <param name="userDto">Güncellenmiş kullanıcı bilgileri</param>
+            <returns>Güncellenmiş kullanıcı bilgileri</returns>
+        </member>
+        <member name="M:BlogApp.Controllers.UserController.Delete(System.Int32)">
+            <summary>
+            Belirtilen ID'ye sahip kullanıcıyı siler.
+            </summary>
+            <param name="id">Silinecek kullanıcı ID'si</param>
+            <returns>Silme işlemi sonucu</returns>
+        </member>
+        <member name="M:BlogApp.Controllers.UserController.BanUser(System.Int32)">
+            <summary>
+            Belirtilen ID'ye sahip kullanıcıyı yasaklar.
+            </summary>
+            <param name="id">Yasaklanacak kullanıcı ID'si</param>
+            <returns>Yasaklama işlemi sonucu</returns>
+        </member>
+    </members>
+</doc>

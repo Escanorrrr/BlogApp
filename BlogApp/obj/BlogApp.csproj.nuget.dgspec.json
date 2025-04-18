@@ -1,0 +1,487 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp\\BlogApp.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Business\\BlogApp.Business.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Business\\BlogApp.Business.csproj",
+        "projectName": "BlogApp.Business",
+        "projectPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Business\\BlogApp.Business.csproj",
+        "packagesPath": "C:\\Users\\ramaz\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Business\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\ramaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.DataAccess\\BlogApp.DataAccess.csproj": {
+                "projectPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.DataAccess\\BlogApp.DataAccess.csproj"
+              },
+              "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Entities\\BlogApp.Entities.csproj": {
+                "projectPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Entities\\BlogApp.Entities.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "HtmlAgilityPack": {
+              "target": "Package",
+              "version": "[1.12.1, )"
+            },
+            "Microsoft.AspNetCore.Hosting": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
+            "Microsoft.AspNetCore.Http.Abstractions": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.14, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.14, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.8.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.DataAccess\\BlogApp.DataAccess.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.DataAccess\\BlogApp.DataAccess.csproj",
+        "projectName": "BlogApp.DataAccess",
+        "projectPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.DataAccess\\BlogApp.DataAccess.csproj",
+        "packagesPath": "C:\\Users\\ramaz\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.DataAccess\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\ramaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Entities\\BlogApp.Entities.csproj": {
+                "projectPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Entities\\BlogApp.Entities.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.14, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.14, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.14, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.14, )"
+            },
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.FileExtensions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Json": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Entities\\BlogApp.Entities.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Entities\\BlogApp.Entities.csproj",
+        "projectName": "BlogApp.Entities",
+        "projectPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Entities\\BlogApp.Entities.csproj",
+        "packagesPath": "C:\\Users\\ramaz\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Entities\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\ramaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.14, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.14, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.8.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Web\\BlogApp.Web.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Web\\BlogApp.Web.csproj",
+        "projectName": "BlogApp.Web",
+        "projectPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Web\\BlogApp.Web.csproj",
+        "packagesPath": "C:\\Users\\ramaz\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Web\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\ramaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Business\\BlogApp.Business.csproj": {
+                "projectPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Business\\BlogApp.Business.csproj"
+              },
+              "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.DataAccess\\BlogApp.DataAccess.csproj": {
+                "projectPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.DataAccess\\BlogApp.DataAccess.csproj"
+              },
+              "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Entities\\BlogApp.Entities.csproj": {
+                "projectPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Entities\\BlogApp.Entities.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp\\BlogApp.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp\\BlogApp.csproj",
+        "projectName": "BlogApp",
+        "projectPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp\\BlogApp.csproj",
+        "packagesPath": "C:\\Users\\ramaz\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\ramaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Business\\BlogApp.Business.csproj": {
+                "projectPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Business\\BlogApp.Business.csproj"
+              },
+              "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.DataAccess\\BlogApp.DataAccess.csproj": {
+                "projectPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.DataAccess\\BlogApp.DataAccess.csproj"
+              },
+              "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Entities\\BlogApp.Entities.csproj": {
+                "projectPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Entities\\BlogApp.Entities.csproj"
+              },
+              "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Web\\BlogApp.Web.csproj": {
+                "projectPath": "C:\\Users\\ramaz\\Desktop\\Dotnet_projeleri\\BlokApp-new\\BlogApp.Web\\BlogApp.Web.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.14, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.14, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.14, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.14, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.14, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.14, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.6.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

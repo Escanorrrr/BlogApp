@@ -1,0 +1,804 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Blog API",
+    "version": "v1"
+  },
+  "paths": {
+    "/Auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Yeni bir kullanıcı kaydı oluşturur.",
+        "requestBody": {
+          "description": "Kayıt için kullanıcı bilgileri",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Kullanıcı girişi yapar ve JWT token döner.",
+        "requestBody": {
+          "description": "Giriş bilgileri",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/BlogPost": {
+      "get": {
+        "tags": [
+          "BlogPost"
+        ],
+        "summary": "Tüm blog yazılarını getirir.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "BlogPost"
+        ],
+        "summary": "Blog yazısını günceller.\r\nImageBase64 alanı ile resim yükleyebilirsiniz.",
+        "requestBody": {
+          "description": "Güncellenecek blog yazısı bilgileri",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BlogPostUpdateDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BlogPostUpdateDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BlogPostUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "BlogPost"
+        ],
+        "summary": "Yeni bir blog yazısı ekler.\r\nImageBase64 alanı ile resim yükleyebilirsiniz.",
+        "requestBody": {
+          "description": "Eklenecek blog yazısı bilgileri",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BlogPostAddDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BlogPostAddDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BlogPostAddDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/BlogPost/{id}": {
+      "get": {
+        "tags": [
+          "BlogPost"
+        ],
+        "summary": "ID'ye göre blog yazısı getirir.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blog yazısının ID'si",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "BlogPost"
+        ],
+        "summary": "Blog yazısını siler.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Silinecek blog yazısının ID'si",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/BlogPost/category/{categoryId}": {
+      "get": {
+        "tags": [
+          "BlogPost"
+        ],
+        "summary": "Belirli bir kategoriye ait blog yazılarını getirir.",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "Kategori ID'si",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/BlogPost/my-posts": {
+      "get": {
+        "tags": [
+          "BlogPost"
+        ],
+        "summary": "Giriş yapmış kullanıcının blog yazılarını getirir.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Category": {
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "Tüm kategorileri getirir.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Comment/getbyid/{id}": {
+      "get": {
+        "tags": [
+          "Comment"
+        ],
+        "summary": "Belirtilen ID'ye sahip yorumu getirir.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Yorum ID'si",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Comment/getall": {
+      "get": {
+        "tags": [
+          "Comment"
+        ],
+        "summary": "Tüm yorumları listeler. Sadece admin yetkisi ile erişilebilir.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Comment/getbyblogpostid/{blogPostId}": {
+      "get": {
+        "tags": [
+          "Comment"
+        ],
+        "summary": "Belirli bir blog yazısına ait yorumları getirir.",
+        "parameters": [
+          {
+            "name": "blogPostId",
+            "in": "path",
+            "description": "Blog yazısı ID'si",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Comment/add": {
+      "post": {
+        "tags": [
+          "Comment"
+        ],
+        "summary": "Yeni bir yorum ekler.",
+        "requestBody": {
+          "description": "Eklenecek yorum bilgileri",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentCreateDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentCreateDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentCreateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Comment/update": {
+      "put": {
+        "tags": [
+          "Comment"
+        ],
+        "summary": "Mevcut bir yorumu günceller.",
+        "requestBody": {
+          "description": "Güncellenecek yorum bilgileri",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentUpdateDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentUpdateDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Comment/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Comment"
+        ],
+        "summary": "Belirtilen ID'ye sahip yorumu siler.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Silinecek yorum ID'si",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/User/{id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Belirtilen ID'ye sahip kullanıcıyı getirir.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Kullanıcı ID'si",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Mevcut bir kullanıcıyı günceller.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Güncellenecek kullanıcı ID'si",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Belirtilen ID'ye sahip kullanıcıyı siler.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Silinecek kullanıcı ID'si",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/User": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Tüm kullanıcıları listeler.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Yeni bir kullanıcı ekler.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserAddDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserAddDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserAddDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/User/ban/{id}": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Belirtilen ID'ye sahip kullanıcıyı yasaklar.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Yasaklanacak kullanıcı ID'si",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BlogPostAddDto": {
+        "required": [
+          "categoryId",
+          "content",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "maxLength": 100,
+            "minLength": 3,
+            "type": "string"
+          },
+          "content": {
+            "maxLength": 10000,
+            "minLength": 10,
+            "type": "string"
+          },
+          "categoryId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "imageBase64": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BlogPostUpdateDto": {
+        "required": [
+          "categoryId",
+          "content",
+          "id",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "maxLength": 100,
+            "minLength": 3,
+            "type": "string"
+          },
+          "content": {
+            "maxLength": 10000,
+            "minLength": 10,
+            "type": "string"
+          },
+          "categoryId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "imageBase64": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CommentCreateDto": {
+        "required": [
+          "blogPostId",
+          "content"
+        ],
+        "type": "object",
+        "properties": {
+          "content": {
+            "maxLength": 1000,
+            "minLength": 2,
+            "type": "string"
+          },
+          "blogPostId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CommentUpdateDto": {
+        "required": [
+          "content",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "maxLength": 1000,
+            "minLength": 2,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoginDto": {
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "minLength": 1,
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "minLength": 6,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RegisterDto": {
+        "required": [
+          "email",
+          "password",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "maxLength": 50,
+            "minLength": 3,
+            "pattern": "^[a-zA-Z0-9_-]+$",
+            "type": "string"
+          },
+          "email": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "maxLength": 100,
+            "minLength": 6,
+            "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{6,}$",
+            "type": "string"
+          },
+          "imageBase64": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserAddDto": {
+        "required": [
+          "email",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "maxLength": 50,
+            "minLength": 3,
+            "pattern": "^[a-zA-Z0-9_-]+$",
+            "type": "string"
+          },
+          "email": {
+            "minLength": 1,
+            "type": "string",
+            "format": "email"
+          },
+          "isAdmin": {
+            "type": "boolean"
+          },
+          "imageBase64": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserUpdateDto": {
+        "required": [
+          "email",
+          "id",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "username": {
+            "maxLength": 50,
+            "minLength": 3,
+            "pattern": "^[a-zA-Z0-9_-]+$",
+            "type": "string"
+          },
+          "email": {
+            "minLength": 1,
+            "type": "string",
+            "format": "email"
+          },
+          "isAdmin": {
+            "type": "boolean"
+          },
+          "imageBase64": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "JWT token'ınızı buraya 'Bearer ' ön ekiyle birlikte girin. Örnek: Bearer xxxxx.yyyyy.zzzzz",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
+}
