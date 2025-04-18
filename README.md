@@ -41,7 +41,7 @@ Bu proje, .NET Core teknolojileri kullanılarak geliştirilmiş kapsamlı bir bl
 ## Veritabanı Yapısı
 
 ### ER Diyagramı
-![Veritabanı ER Diyagramı](db-diagrams.png)
+![Veritabanı ER Diyagramı](images/db-diagrams.png)
 
 ### Tablolar
 
@@ -75,6 +75,27 @@ Bu proje, .NET Core teknolojileri kullanılarak geliştirilmiş kapsamlı bir bl
 - CreatedAt (DateTime)
 - UserId (int, FK)
 - BlogPostId (int, FK)
+
+- ## Ekran Görüntüleri
+
+### Ana Sayfa
+![Ana Sayfa](images/ekran.png)
+
+### Blog Detay Sayfası
+![Blog Detay](images/edit.png)
+
+## Çoklu Proje Başlatma Ayarları
+
+1. Solution Explorer'da solution'a (BlogApp) sağ tıklayın
+2. "Set Startup Projects..." seçeneğini seçin
+3. "Multiple startup projects" seçeneğini işaretleyin
+4. Listeden:
+   - BlogApp (API) -> Action: "Start"
+   - BlogApp.Web -> Action: "Start"
+   olarak ayarlayın
+5. Apply ve OK diyerek kaydedin
+
+Artık Visual Studio'da projeyi çalıştırdığınızda (F5 veya Ctrl+F5) hem API hem de Web projesi aynı anda başlayacaktır.
 
 ## Güvenlik
 
